@@ -1,13 +1,18 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import * as api from './api';
-import { createEmptyHotel, Hotel } from './character.vm';
-import { mapHotelFromApiToVm, mapHotelFromVmToApi } from './character.mappers';
+import { createEmptyCharacter, Character } from './character.vm';
+import {
+  mapCharacterFromApiToVm,
+  mapCharacterFromVmToApi,
+} from './character.mappers';
 import { Lookup } from 'common/models';
-import { HotelComponent } from './character.component';
+import { CharacterComponent } from './character.component';
 
-export const HotelContainer: React.FunctionComponent = (props) => {
-  const [hotel, setHotel] = React.useState<Hotel>(createEmptyHotel());
+export const CharacterContainer: React.FunctionComponent = (props) => {
+  const [character, setCharacter] = React.useState<Character>(
+    createEmptyCharacter()
+  );
   const [cities, setCities] = React.useState<Lookup[]>([]);
   const { id } = useParams();
   const history = useHistory();
@@ -17,27 +22,33 @@ export const HotelContainer: React.FunctionComponent = (props) => {
     setCities(apiCities);
   };
 
-  const handleLoadHotel = async () => {
-    const apiHotel = await api.getHotel(id);
-    setHotel(mapHotelFromApiToVm(apiHotel));
+  const handleLoadCharacter = async () => {
+    const apiCharacter = await api.getCharacter(id);
+    setCharacter(mapCharacterFromApiToVm(apiCharacter));
   };
 
   React.useEffect(() => {
     if (id) {
-      handleLoadHotel();
+      handleLoadCharacter();
     }
     handleLoadCityCollection();
   }, []);
 
-  const handleSave = async (hotel: Hotel) => {
-    const apiHotel = mapHotelFromVmToApi(hotel);
-    const success = await api.saveHotel(apiHotel);
+  const handleSave = async (character: Character) => {
+    const apiCharacter = mapCharacterFromVmToApi(character);
+    const success = await api.saveCharacter(apiCharacter);
     if (success) {
       history.goBack();
     } else {
-      alert('Error on save hotel');
+      alert('Error on save character');
     }
   };
 
-  return <HotelComponent hotel={hotel} cities={cities} onSave={handleSave} />;
+  return (
+    <CharacterComponent
+      character={character}
+      cities={cities}
+      onSave={handleSave}
+    />
+  );
 };
