@@ -8,30 +8,31 @@ import {
 } from './character.mappers';
 import { Lookup } from 'common/models';
 import { CharacterComponent } from './character.component';
+import { Episode } from './api';
 
 export const CharacterContainer: React.FunctionComponent = (props) => {
   const [character, setCharacter] = React.useState<Character>(
     createEmptyCharacter()
   );
-  const [cities, setCities] = React.useState<Lookup[]>([]);
+  const [episodes, setEpisodes] = React.useState<Episode[]>([]);
   const { id } = useParams();
   const history = useHistory();
-/*
-  const handleLoadCityCollection = async () => {
-    const apiCities = await api.getCities();
-    setCities(apiCities);
+
+  const handleLoadEpisodesCollection = async () => {
+    const apiEpisodes = await api.getEpisodes();
+    setEpisodes(apiEpisodes);
   };
-*/
+
   const handleLoadCharacter = async () => {
-    const apiCharacter = await api.getCharacter(id);
+    const apiCharacter = await api.getCharacter(parseInt(id));
     setCharacter(mapCharacterFromApiToVm(apiCharacter));
   };
 
   React.useEffect(() => {
-    if (id) {
+    if (parseInt(id)) {
       handleLoadCharacter();
     }
-  //  handleLoadCityCollection();
+    handleLoadEpisodesCollection();
   }, []);
 
   const handleSave = async (character: Character) => {
@@ -47,7 +48,7 @@ export const CharacterContainer: React.FunctionComponent = (props) => {
   return (
     <CharacterComponent
       character={character}
-      cities={cities}
+      episodes={episodes}
       onSave={handleSave}
     />
   );
