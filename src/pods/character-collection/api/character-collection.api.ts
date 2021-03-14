@@ -4,8 +4,6 @@ import { mockCharacterCollection } from './character-collection.mock-data';
 
 const url = 'http://localhost:3000/characters';
 
-let characterCollection = [...mockCharacterCollection];
-
 export const getCharacterCollection = async (): Promise<
   CharacterEntityApi[]
 > => {
