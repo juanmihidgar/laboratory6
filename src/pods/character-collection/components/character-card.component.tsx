@@ -10,8 +10,10 @@ import Avatar from '@material-ui/core/Avatar/Avatar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { grey, green, red } from '@material-ui/core/colors';
 import { CharacterEntityVm } from '../character-collection.vm';
 import * as classes from './character-card.styles';
+import { CenteredLayout } from 'layouts';
 
 interface Props {
   character: CharacterEntityVm;
@@ -25,7 +27,29 @@ export const CharacterCard: React.FunctionComponent<Props> = (props) => {
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar aria-label="Character">{character.status}</Avatar>}
+        avatar={
+          <div
+            style={{
+              borderRadius: '.5rem',
+              height: '2rem',
+              width: '5rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontWeight: 'bold',
+              background:
+                character.status === 'Alive'
+                  ? green[100]
+                  : character.status === 'Dead'
+                  ? red[100]
+                  : grey[100],
+            }}
+          >
+            <span style={{ textTransform: 'capitalize' }}>
+              {character.status}
+            </span>
+          </div>
+        }
         title={character.name}
         subheader={character.species}
       />
@@ -34,7 +58,7 @@ export const CharacterCard: React.FunctionComponent<Props> = (props) => {
           <CardMedia
             image={character.image}
             title={character.name}
-            style={{ height: 0, paddingTop: '80.0%' }}
+            style={{ height: 0, paddingTop: '100%' }}
           />
           <Typography variant="subtitle1" gutterBottom>
             {character.location.name}
