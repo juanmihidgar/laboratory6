@@ -16,12 +16,12 @@ export const CharacterContainer: React.FunctionComponent = (props) => {
   const [cities, setCities] = React.useState<Lookup[]>([]);
   const { id } = useParams();
   const history = useHistory();
-
+/*
   const handleLoadCityCollection = async () => {
     const apiCities = await api.getCities();
     setCities(apiCities);
   };
-
+*/
   const handleLoadCharacter = async () => {
     const apiCharacter = await api.getCharacter(id);
     setCharacter(mapCharacterFromApiToVm(apiCharacter));
@@ -31,7 +31,7 @@ export const CharacterContainer: React.FunctionComponent = (props) => {
     if (id) {
       handleLoadCharacter();
     }
-    handleLoadCityCollection();
+  //  handleLoadCityCollection();
   }, []);
 
   const handleSave = async (character: Character) => {
